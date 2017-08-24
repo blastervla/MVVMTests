@@ -4,8 +4,11 @@ import java.util.ArrayList;
 
 import Test2.MVVMCommons.DataModel.DataModel;
 import Test2.MVVMCommons.DataModel.DataModelAction;
+import Test2.MVVMCommons.DataModel.DataModelQuery;
 
 public class UserManagerDataModel implements DataModel {
+
+    public static final String USER_LIST_VALUE = "userList";
 
     ArrayList<String> userList;
 
@@ -14,8 +17,14 @@ public class UserManagerDataModel implements DataModel {
     }
 
     @Override
-    public Object handleQuery(/*DataModelQuery*/Object queryParams) {
-        return null;
+    public Object handleQuery(DataModelQuery queryParams) {
+        switch (queryParams.getType()) {
+            case DataModelQuery.VALUE:
+                return getValue((String) queryParams.getExtraInfo());
+
+            default:
+                return null;
+        }
     }
 
     @Override
@@ -57,5 +66,11 @@ public class UserManagerDataModel implements DataModel {
             userList.remove(user);
         }
         return true;
+    }
+
+    private Object getValue(String valueName) {
+        if (valueName.equals(USER_LIST_VALUE))
+            return this.userList;
+        return null;
     }
 }

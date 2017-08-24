@@ -1,7 +1,11 @@
 package Test2;
 
+import java.util.List;
+
 import Test2.MVVMCommons.DataModel.DataModelAction;
+import Test2.MVVMCommons.DataModel.DataModelQuery;
 import Test2.MVVMCommons.DataTransport.Event;
+import Test2.MVVMCommons.KeyValuePair;
 import Test2.MVVMCommons.MvvmActivity;
 import Test2.MVVMCommons.DataTransport.UIEvent;
 import Test2.MVVMCommons.UIModel;
@@ -29,35 +33,45 @@ public class UserManagerViewModel extends ViewModel {
     }
 
     private void handleClickEvent(UIEvent e) {
-        if (e.getData().getSenderID() == "btn_add_user") {
+        UIModel eventUIModel = e.getData().getExtraData();
+        this.uiModel = eventUIModel;
 
-            UserManagerUIModel eventUIModel = (UserManagerUIModel) e.getData().getExtraData();
+        switch (e.getData().getSenderID()) {
+            case "btn_add_user":
+                //Communicate with dataModel...
+                String editTextValue = eventUIModel.get("userNameEditTextValue");
+                boolean dataModelOperationSuccess = this.dataModel.handleAction(new DataModelAction(DataModelAction.ADD, editTextValue));
 
-            //Communicate with dataModel...
-            boolean dataModelOperationSuccess = this.dataModel.handleAction(new DataModelAction(DataModelAction.ADD, eventUIModel.getUserNameEditTextValue()));
+                //Show toast:
+                String toastMessage = dataModelOperationSuccess ? "Added user " + editTextValue : "Could not add user " + editTextValue;
+                this.uiModel = uiModel.copy(new KeyValuePair<>("toastContent", toastMessage));
+                activity.updateUIModel(this.uiModel);
+                break;
 
-            //Show toast:
-            this.uiModel = eventUIModel;
+            case "btn_delete_user":
+                //Communicate with dataModel...
+                editTextValue = eventUIModel.get("userNameEditTextValue");
+                dataModelOperationSuccess = this.dataModel.handleAction(new DataModelAction(DataModelAction.DELETE, editTextValue));
 
-            String toastMessage = dataModelOperationSuccess ? "Added user " + eventUIModel.getUserNameEditTextValue() : "Could not add user " + eventUIModel.getUserNameEditTextValue();
-            eventUIModel.setToastContent(toastMessage);
-            this.uiModel = UserManagerUIModel.modelFromModel(eventUIModel);
-            activity.updateUIModel(eventUIModel);
+                //Show toast:
+                toastMessage = dataModelOperationSuccess ? "Deleted user " + editTextValue : "Could not delete user " + editTextValue;
+                this.uiModel = uiModel.copy(new KeyValuePair<>("toastContent", toastMessage));
+                activity.updateUIModel(this.uiModel);
+                break;
 
-        } else if (e.getData().getSenderID() == "btn_delete_user") {
+            case "btn_user_list":
 
-            UserManagerUIModel eventUIModel = (UserManagerUIModel) e.getData().getExtraData();
+                List<String> userList = (List<String>) dataModel.handleQuery(new DataModelQuery(DataModelQuery.VALUE, UserManagerDataModel.USER_LIST_VALUE));
 
-            //Communicate with dataModel...
-            boolean dataModelOperationSuccess = this.dataModel.handleAction(new DataModelAction(DataModelAction.DELETE, eventUIModel.getUserNameEditTextValue()));
+                String userListString = "";
 
-            //Show toast:
-            this.uiModel = eventUIModel;
+                for (String user : userList) {
+                    userListString += " - " + user + "\n";
+                }
 
-            String toastMessage = dataModelOperationSuccess ? "Deleted user " + eventUIModel.getUserNameEditTextValue() : "Could not delete user " + eventUIModel.getUserNameEditTextValue();
-            eventUIModel.setToastContent(toastMessage);
-            this.uiModel = UserManagerUIModel.modelFromModel(eventUIModel);
-            activity.updateUIModel(eventUIModel);
+                this.uiModel = uiModel.copy(new KeyValuePair<>("userListDialogTitle", "Currently registered users:"), new KeyValuePair<>("userListDialogContent", userListString));
+                activity.updateUIModel(uiModel);
+                break;
         }
     }
 }

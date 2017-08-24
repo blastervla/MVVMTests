@@ -51,4 +51,12 @@
 
     </LinearLayout>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_user_list"
+        android:text="Show list of users"
+        android:onClick="onUserListButtonClick"
+        android:layout_margin="10dp"/>
+
 </LinearLayout>
