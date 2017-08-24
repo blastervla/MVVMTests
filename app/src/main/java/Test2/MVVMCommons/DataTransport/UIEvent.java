@@ -1,4 +1,4 @@
-package Test2;
+package Test2.MVVMCommons.DataTransport;
 
 public class UIEvent extends Event {
     public static final String CLICK = "Click";

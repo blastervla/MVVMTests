@@ -1,4 +1,4 @@
-package Test2;
+package Test2.MVVMCommons;
 
 import android.support.v7.app.AppCompatActivity;
 

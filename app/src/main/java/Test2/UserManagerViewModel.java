@@ -1,5 +1,12 @@
 package Test2;
 
+import Test2.MVVMCommons.DataModel.DataModelAction;
+import Test2.MVVMCommons.DataTransport.Event;
+import Test2.MVVMCommons.MvvmActivity;
+import Test2.MVVMCommons.DataTransport.UIEvent;
+import Test2.MVVMCommons.UIModel;
+import Test2.MVVMCommons.ViewModel;
+
 public class UserManagerViewModel extends ViewModel {
 
     UserManagerDataModel dataModel;

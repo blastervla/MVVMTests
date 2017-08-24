@@ -1,6 +1,8 @@
 package Test2;
 
-public class UserManagerUIModel implements UIModel{
+import Test2.MVVMCommons.UIModel;
+
+public class UserManagerUIModel implements UIModel {
 
     private String userNameEditTextValue;
     private String toastContent;

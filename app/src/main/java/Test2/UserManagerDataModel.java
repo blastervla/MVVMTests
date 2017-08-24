@@ -2,7 +2,10 @@ package Test2;
 
 import java.util.ArrayList;
 
-public class UserManagerDataModel implements DataModel{
+import Test2.MVVMCommons.DataModel.DataModel;
+import Test2.MVVMCommons.DataModel.DataModelAction;
+
+public class UserManagerDataModel implements DataModel {
 
     ArrayList<String> userList;
 

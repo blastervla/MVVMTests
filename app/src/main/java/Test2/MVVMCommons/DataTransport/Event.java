@@ -1,4 +1,4 @@
-package Test2;
+package Test2.MVVMCommons.DataTransport;
 
 public class Event {
     protected String eventType;

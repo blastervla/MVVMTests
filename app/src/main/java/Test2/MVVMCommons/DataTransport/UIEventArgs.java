@@ -1,4 +1,6 @@
-package Test2;
+package Test2.MVVMCommons.DataTransport;
+
+import Test2.MVVMCommons.UIModel;
 
 public class UIEventArgs {
     private String senderID;

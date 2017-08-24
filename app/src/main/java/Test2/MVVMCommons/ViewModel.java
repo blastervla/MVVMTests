@@ -1,4 +1,6 @@
-package Test2;
+package Test2.MVVMCommons;
+
+import Test2.MVVMCommons.DataTransport.Event;
 
 public class ViewModel {
     protected MvvmActivity activity;

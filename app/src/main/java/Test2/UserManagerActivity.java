@@ -7,6 +7,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import Test2.MVVMCommons.MvvmActivity;
+import Test2.MVVMCommons.DataTransport.UIEvent;
+import Test2.MVVMCommons.DataTransport.UIEventArgs;
+import Test2.MVVMCommons.UIModel;
+
 public class UserManagerActivity extends MvvmActivity {
     private UserManagerUIModel model;
     private UserManagerViewModel viewModel;

@@ -1,4 +1,4 @@
-package Test2;
+package Test2.MVVMCommons.DataModel;
 
 public class DataModelAction {
     public static final String ADD = "ADD";
