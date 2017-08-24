@@ -16,7 +16,6 @@ import Test2.MVVMCommons.DataTransport.UIEventArgs;
 import Test2.MVVMCommons.UIModel;
 
 public class UserManagerActivity extends MvvmActivity {
-    private UIModel model;
     private UserManagerViewModel viewModel;
 
     private EditText txtUsername;
