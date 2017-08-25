@@ -5,19 +5,17 @@ import java.util.List;
 import Test2.MVVMCommons.DataModel.DataModelAction;
 import Test2.MVVMCommons.DataModel.DataModelQuery;
 import Test2.MVVMCommons.DataTransport.Event;
-import Test2.MVVMCommons.KeyValuePair;
-import Test2.MVVMCommons.MvvmActivity;
 import Test2.MVVMCommons.DataTransport.UIEvent;
-import Test2.MVVMCommons.UIModel;
 import Test2.MVVMCommons.ViewModel;
 
-public class UserManagerViewModel extends ViewModel {
+public class UserManagerViewModel implements ViewModel {
 
-    UserManagerDataModel dataModel;
+    private UserManagerDataModel dataModel;
+    private UserManagerActivityStructure structure;
 
-    public UserManagerViewModel(MvvmActivity activity, UIModel uiModel) {
-        super(activity, uiModel);
+    public UserManagerViewModel() {
         this.dataModel = new UserManagerDataModel();
+        this.structure = new UserManagerActivityStructure();
     }
 
     @Override
@@ -32,31 +30,33 @@ public class UserManagerViewModel extends ViewModel {
         return false;
     }
 
-    private void handleClickEvent(UIEvent e) {
-        UIModel eventUIModel = e.getData().getExtraData();
-        this.uiModel = eventUIModel;
+    @Override
+    public UserManagerActivityStructure getStructure() {
+        return this.structure;
+    }
 
-        switch (e.getData().getSenderID()) {
+    private void handleClickEvent(UIEvent e) {
+        switch (e.getData()) {
             case "btn_add_user":
                 //Communicate with dataModel...
-                String editTextValue = eventUIModel.get("userNameEditTextValue");
-                boolean dataModelOperationSuccess = this.dataModel.handleAction(new DataModelAction(DataModelAction.ADD, editTextValue));
+                String username = structure.getUsernameText();
+                boolean dataModelOperationSuccess = this.dataModel.handleAction(new DataModelAction(DataModelAction.ADD, username));
 
                 //Show toast:
-                String toastMessage = dataModelOperationSuccess ? "Added user " + editTextValue : "Could not add user " + editTextValue;
-                this.uiModel = uiModel.copy(new KeyValuePair<>("toastContent", toastMessage));
-                activity.updateUIModel(this.uiModel);
+                String toastMessage = dataModelOperationSuccess ? "Added user " + username : "Could not add user " + username;
+                structure.setToastMessage(toastMessage);
+                structure.notifySubscribers();
                 break;
 
             case "btn_delete_user":
                 //Communicate with dataModel...
-                editTextValue = eventUIModel.get("userNameEditTextValue");
-                dataModelOperationSuccess = this.dataModel.handleAction(new DataModelAction(DataModelAction.DELETE, editTextValue));
+                username = structure.getUsernameText();
+                dataModelOperationSuccess = this.dataModel.handleAction(new DataModelAction(DataModelAction.DELETE, username));
 
                 //Show toast:
-                toastMessage = dataModelOperationSuccess ? "Deleted user " + editTextValue : "Could not delete user " + editTextValue;
-                this.uiModel = uiModel.copy(new KeyValuePair<>("toastContent", toastMessage));
-                activity.updateUIModel(this.uiModel);
+                toastMessage = dataModelOperationSuccess ? "Deleted user " + username : "Could not delete user " + username;
+                structure.setToastMessage(toastMessage);
+                structure.notifySubscribers();
                 break;
 
             case "btn_user_list":
@@ -69,8 +69,9 @@ public class UserManagerViewModel extends ViewModel {
                     userListString += " - " + user + "\n";
                 }
 
-                this.uiModel = uiModel.copy(new KeyValuePair<>("userListDialogTitle", "Currently registered users:"), new KeyValuePair<>("userListDialogContent", userListString));
-                activity.updateUIModel(uiModel);
+                structure.setAlertDialogTitle("Currently registered users:");
+                structure.setAlertDialogContent(userListString);
+                structure.notifySubscribers();
                 break;
         }
     }

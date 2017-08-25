@@ -2,10 +2,12 @@ package Test2.MVVMCommons;
 
 import android.support.v7.app.AppCompatActivity;
 
-public class MvvmActivity extends AppCompatActivity {
-    protected UIModel model;
+import java.util.Observable;
+import java.util.Observer;
 
-    public void updateUIModel(UIModel model) {
-        this.model = model;
+public class MvvmActivity extends AppCompatActivity implements Observer{
+    @Override
+    public void update(Observable o, Object arg) {
+        // no-op
     }
 }

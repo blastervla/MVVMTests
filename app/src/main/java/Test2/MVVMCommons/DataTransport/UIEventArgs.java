@@ -1,21 +1,15 @@
 package Test2.MVVMCommons.DataTransport;
 
-import Test2.MVVMCommons.UIModel;
+import Test2.MVVMCommons.MvvmActivity;
 
 public class UIEventArgs {
     private String senderID;
-    private UIModel extraData;
 
-    public UIEventArgs(String senderID, UIModel extraData) {
+    public UIEventArgs(String senderID) {
         this.senderID = senderID;
-        this.extraData = extraData;
     }
 
     public String getSenderID() {
         return senderID;
-    }
-
-    public UIModel getExtraData() {
-        return extraData;
     }
 }
